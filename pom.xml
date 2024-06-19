@@ -4,13 +4,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.example</groupId>
-	<artifactId>rest-service-parent</artifactId>
+	<groupId>com.assignment.keithspiteri</groupId>
+	<artifactId>acceptance-tests-parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<profiles>
-		<profile>
+		<!--<profile>
 			<id>java-build</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -18,7 +18,7 @@
 			<modules>
 				<module>rest-service</module>
 			</modules>
-		</profile>
+		</profile>-->
 
 		<profile>
 			<id>acceptance-tests</id>
