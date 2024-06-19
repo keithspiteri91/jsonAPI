@@ -1,4 +1,4 @@
-package com.assignment.restservice.json;
+package com.assignment.restservice.environment;
 
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;

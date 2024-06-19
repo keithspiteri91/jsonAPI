@@ -1,4 +1,4 @@
-package com.example.restservice.books;
+package com.assignment.restservice.json;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import com.assignment.restservice.json.CIEnvironmentExtension;
+import com.assignment.restservice.environment.CIEnvironmentExtension;
 
 import io.restassured.http.ContentType;
 
