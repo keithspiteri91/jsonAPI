@@ -37,6 +37,26 @@ public class JSONIT {
 			.body("$", not(empty())).and()
 			.body("size()", greaterThan(0));
     }
+
+	@Test
+    public void deletePost() {
+
+        given()
+        .when()
+			.get("/posts/{id}",1)
+		.then().assertThat()
+			.statusCode(HTTP_OK);
+    }
+
+	@Test
+    public void deleteNonExistingPost() {
+
+        given()
+        .when()
+			.get("/posts/{id}",1213243535)
+		.then().assertThat()
+			.statusCode(HTTP_NOT_FOUND);
+    }
 	
 	@Test
 	public void specificPost_Found() {
@@ -58,4 +78,5 @@ public class JSONIT {
 			.statusCode(HTTP_NOT_FOUND).and()
 			.body("$", Matchers.aMapWithSize(0));
 	}
+
 }
