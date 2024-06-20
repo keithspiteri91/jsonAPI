@@ -1,6 +1,7 @@
 package com.assignment.restservice.json;
 
 import static io.restassured.RestAssured.given;
+import org.hamcrest.Matchers;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.empty;
@@ -22,8 +23,6 @@ import com.assignment.restservice.environment.CIEnvironmentExtension;
 import io.restassured.http.ContentType;
 
 @Tag("acceptance")
-//@ExtendWith(LocalEnvironmentExtension.class)
-//@ExtendWith(DevEnvironmentExtension.class)
 @ExtendWith(CIEnvironmentExtension.class)
 public class JSONIT {
 
@@ -59,4 +58,25 @@ public class JSONIT {
 			.statusCode(HTTP_NOT_FOUND);
     }
 	
+	@Test
+	public void specificPost_Found() {
+		given()
+		.when()
+			.get("/posts/{id}", 1)
+		.then().assertThat()
+			.statusCode(HTTP_OK).and()
+			.body("$", not(empty())).and()
+			.body("id", equalTo(1));
+	}
+	
+	@Test
+	public void post_NotFound() {
+		given()
+		.when()
+			.get("/posts/{id}", 1000)
+		.then().assertThat()
+			.statusCode(HTTP_NOT_FOUND).and()
+			.body("$", Matchers.aMapWithSize(0));
+	}
+
 }
