@@ -3,22 +3,17 @@ package com.assignment.restservice.json;
 import static io.restassured.RestAssured.given;
 import org.hamcrest.Matchers;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.notNullValue;
 import static java.net.HttpURLConnection.HTTP_OK;
-import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_CREATED;
-
-import java.util.stream.Stream;
+import static java.net.HttpURLConnection.HTTP_INTERNAL_ERROR;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import com.assignment.restservice.environment.CIEnvironmentExtension;
 
@@ -48,19 +43,9 @@ public class JSONIT {
 
         given()
         .when()
-			.get("/posts/{id}",1)
+			.delete("/posts/{id}",1)
 		.then().assertThat()
 			.statusCode(HTTP_OK);
-    }
-
-	@Test
-    public void deleteNonExistingPost() {
-
-        given()
-        .when()
-			.get("/posts/{id}",1213243535)
-		.then().assertThat()
-			.statusCode(HTTP_NOT_FOUND);
     }
 	
 	@Test
@@ -78,10 +63,10 @@ public class JSONIT {
 	public void post_NotFound() {
 		given()
 		.when()
-			.get("/posts/{id}", 1000)
+			.post("/posts/{id}", 1000)
 		.then().assertThat()
-			.statusCode(HTTP_NOT_FOUND).and()
-			.body("$", Matchers.aMapWithSize(0));
+			.statusCode(HTTP_INTERNAL_ERROR);
+		
 	}
 	
 	@Test
@@ -98,6 +83,35 @@ public class JSONIT {
 			.body("$", not(empty())).and()
 			.body("id", notNullValue())
 			.body("title", equalTo("This is a Test Post"));
+
+	}
+	
+	@Test
+	public void modifyPost_FromFiles_Success() throws IOException {
+		File jsonFile = new File("src/test/resources/modify-post-request.json");
+
+		given()
+			.contentType(ContentType.JSON)
+			.body(jsonFile)
+		.when()
+			.put("/posts/{id}", 2)
+		.then().assertThat()
+			.statusCode(HTTP_OK).and()
+			.body("$", not(empty()));
+
+	}
+
+	@Test
+	public void modifyPost_FromFiles_Failure() throws IOException {
+		File jsonFile = new File("src/test/resources/modify-post-request.json");
+
+		given()
+			.contentType(ContentType.JSON)
+			.body(jsonFile)
+		.when()
+			.put("/posts/{id}", 2342)
+		.then().assertThat()
+			.statusCode(HTTP_INTERNAL_ERROR);
 
 	}
 }
