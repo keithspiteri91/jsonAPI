@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.greaterThan;
 import static java.net.HttpURLConnection.HTTP_OK;
+import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 
 import java.util.stream.Stream;
 
@@ -38,4 +39,24 @@ public class JSONIT {
 			.body("size()", greaterThan(0));
     }
 
+	@Test
+    public void deletePost() {
+
+        given()
+        .when()
+			.get("/posts/{id}",1)
+		.then().assertThat()
+			.statusCode(HTTP_OK);
+    }
+
+	@Test
+    public void deleteNonExistingPost() {
+
+        given()
+        .when()
+			.get("/posts/{id}",1213243535)
+		.then().assertThat()
+			.statusCode(HTTP_NOT_FOUND);
+    }
+	
 }
